@@ -3,6 +3,8 @@ package com.humber.saynn.humbercalc;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,7 +14,6 @@ public class Calculator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
-        //calculator = new Calculator();
     }
 
     protected void numberClicked(View v){
