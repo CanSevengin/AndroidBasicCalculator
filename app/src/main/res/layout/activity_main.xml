@@ -44,17 +44,19 @@
             android:id="@+id/btnC"
             android:text="C"
             style="@style/style_button"
-            android:background="#C4C5C7"/>
+            android:background="#C4C5C7" />
         <Button
             android:id="@+id/btnSign"
             android:text="+-"
             style="@style/style_button"
-            android:background="#C4C5C7"/>
+            android:background="#C4C5C7"
+/>
         <Button
             android:id="@+id/btnPercent"
             android:text="%"
             style="@style/style_button"
-            android:background="#C4C5C7"/>
+            android:background="#C4C5C7"
+/>
         <Button
             android:id="@+id/btnDivide"
             android:text="/"
@@ -69,7 +71,6 @@
             <Button
                 android:id="@+id/btn7"
                 android:text="7"
-                android:onClick="numberClicked"
                 style="@style/style_button" />
             <Button
                 android:id="@+id/btn8"
