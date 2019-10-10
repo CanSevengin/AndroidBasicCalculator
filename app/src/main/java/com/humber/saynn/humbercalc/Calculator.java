@@ -11,46 +11,58 @@ public class Calculator {
     String historyString;
     ArrayList<String> stack;
     ArrayList<String> calculationStack;
+    boolean newOp;
 
-    public Calculator(){
+    public Calculator() {
         resultString = "";
         historyString = "";
         stack = new ArrayList<String>();
         calculationStack = new ArrayList<String>();
+        newOp = false;
     }
 
     public void numberClicked(String numberString) {
         String op = "";
         if (isNumber(numberString)) {
-            if(stack.size() != 0){
-                if(isArithmeticOperation(stack.get(stack.size()-1))){
-                    //Log.e("arit", "inside isArit: " + stack.toString());
-                    this.resultString = numberString;
-                    stack.remove(stack.size()-1);
-                }else{
+            if (!newOp) {
+                if (stack.size() != 0) {
+                    if (isArithmeticOperation(stack.get(stack.size() - 1))) {
+                        this.resultString = numberString;
+                        stack.remove(stack.size() - 1);
+                    } else {
+                        this.resultString += numberString;
+                    }
+                } else {
                     this.resultString += numberString;
                 }
-            }else{
-                this.resultString+=numberString;
+            } else {
+                this.resultString = numberString;
+                this.historyString = stack.get(0);
+                newOp = false;
             }
-
-
+            // If any arithmetic operation is clicked
         } else if (isArithmeticOperation(numberString)) {
+            //If no other calculation is made beforehand
+            Log.e("arit", "started: " + stack.toString());
             if (!this.resultString.isEmpty()) {
                 stack.add(this.resultString);
                 calculationStack.add(this.resultString);
                 this.historyString = this.resultString;
                 this.resultString = "";
                 op = getArithmeticOperation(numberString);
-                if(op.equalsIgnoreCase("equals")){
-                    calculationStack.add(stack.get(stack.size()-1));
+                //If equals is clicked
+                if (op.equalsIgnoreCase("equals")) {
+                    calculationStack.add(stack.get(stack.size() - 1));
                     //Log.e("arit","inside Equals: " + calculationStack.toString());
-                    String newStackStarted = doTheMath(calculationStack.get(0),calculationStack.get(2),calculationStack.get(1));
+                    String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
+                    this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
                     calculationStack.clear();
                     stack.clear();
                     stack.add(newStackStarted);
-                    this.resultString=newStackStarted;
-                }else{
+                    newOp = true;
+                    this.resultString = newStackStarted;
+                } else {
+                    newOp = false;
                     calculationStack.add(op);
                     stack.add(numberString);
                 }
@@ -58,40 +70,40 @@ public class Calculator {
         }
     }
 
-    private String doTheMath(String no1, String no2, String op){
-        String result="";
+    private String doTheMath(String no1, String no2, String op) {
+        String result = "";
         double number1 = Double.valueOf(no1);
         double number2 = Double.valueOf(no2);
         double res = 0;
         DecimalFormat df = new DecimalFormat("#.####");
-        if(op.equalsIgnoreCase("plus")){
-             res = number1 + number2;
-             result =  df.format(res);
-        }else if(op.equalsIgnoreCase("multiply")){
+        if (op.equalsIgnoreCase("plus")) {
+            res = number1 + number2;
+            result = df.format(res);
+        } else if (op.equalsIgnoreCase("multiply")) {
             res = number1 * number2;
             result = df.format(res);
-        }else if(op.equalsIgnoreCase("divide")){
+        } else if (op.equalsIgnoreCase("divide")) {
             res = number1 / number2;
-            result =  df.format(res);
-        }else if(op.equalsIgnoreCase("minus")){
+            result = df.format(res);
+        } else if (op.equalsIgnoreCase("minus")) {
             res = number1 - number2;
-            result =  df.format(res);
+            result = df.format(res);
         }
         return result;
     }
 
     private String getArithmeticOperation(String s) {
         String op = "";
-        if(s.equalsIgnoreCase("x")){
+        if (s.equalsIgnoreCase("x")) {
             op = "multiply";
-        }else if(s.equalsIgnoreCase("+")){
+        } else if (s.equalsIgnoreCase("+")) {
             op = "plus";
-        }else if(s.equalsIgnoreCase("/")){
+        } else if (s.equalsIgnoreCase("/")) {
             op = "divide";
 
-        }else if(s.equalsIgnoreCase("-")){
+        } else if (s.equalsIgnoreCase("-")) {
             op = "minus";
-        }else if(s.equalsIgnoreCase("=")){
+        } else if (s.equalsIgnoreCase("=")) {
             op = "equals";
         }
         return op;
@@ -109,7 +121,7 @@ public class Calculator {
 
     private boolean isNumber(String numberString) {
         char c = numberString.charAt(0);
-        if(Character.isDigit(c)){
+        if (Character.isDigit(c)) {
             return true;
         }
 
@@ -120,7 +132,7 @@ public class Calculator {
         return this.historyString;
     }
 
-    public String getNumberString(){
+    public String getNumberString() {
         return this.resultString;
     }
 
