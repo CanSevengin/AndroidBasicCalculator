@@ -13,7 +13,8 @@ public class Calculator {
     ArrayList<String> calculationStack;
     boolean newOp;
     DecimalFormat df;
-
+    boolean percentage;
+    // QUIZ NOTE : PERCENTAGE IMPLEMENTATION IS IN LINE 109.
     public Calculator() {
         resultString = "";
         historyString = "";
@@ -21,6 +22,7 @@ public class Calculator {
         calculationStack = new ArrayList<String>();
         newOp = false;
         df = new DecimalFormat("#.########");
+        percentage = false;
     }
 
     public void numberClicked(String numberString) {
@@ -56,19 +58,19 @@ public class Calculator {
                 op = getArithmeticOperation(numberString);
                 //If equals is clicked
                 if (op.equalsIgnoreCase("equals")) {
-                        calculationStack.add(stack.get(stack.size() - 1));
-                        //Log.e("arit","inside Equals: " + calculationStack.toString());
-                        String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
-                        this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
-                        calculationStack.clear();
-                        stack.clear();
-                        stack.add(newStackStarted);
-                        newOp = true;
-                        this.resultString = newStackStarted;
+                    calculationStack.add(stack.get(stack.size() - 1));
+                    //Log.e("arit","inside Equals: " + calculationStack.toString());
+                    String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
+                    this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
+                    calculationStack.clear();
+                    stack.clear();
+                    stack.add(newStackStarted);
+                    newOp = true;
+                    this.resultString = newStackStarted;
                 } else {
-                    Log.e("arit",calculationStack.toString());
-                    if(calculationStack.size()>=3){
-                        this.resultString=doTheMath(calculationStack.get(0),calculationStack.get(2),calculationStack.get(1));
+                    //Log.e("arit", calculationStack.toString());
+                    if (calculationStack.size() >= 3) {
+                        this.resultString = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
                         this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
                         calculationStack.clear();
                         stack.clear();
@@ -86,7 +88,7 @@ public class Calculator {
         if (isFunctionalButton(numberString)) {
             String fnctn = getFunctionalButton(numberString);
             if (fnctn.equalsIgnoreCase(".")) {
-                if(!this.resultString.contains(".")){
+                if (!this.resultString.contains(".")) {
                     this.resultString += fnctn;
                 }
 
@@ -104,8 +106,25 @@ public class Calculator {
                         this.resultString = Math.abs(Double.valueOf(this.resultString)) + "";
                     }
                 }
+                //CALLED IF PERCENTAGE IS CLICKED
             } else if (fnctn.equalsIgnoreCase("percent")) {
-                this.resultString = df.format(Double.valueOf(this.resultString) / 100.0);
+                percentage = true;
+                Double currentValue = Double.valueOf(this.resultString);
+                String percentValue = df.format(currentValue/100);
+                if(!this.resultString.contains("%")){
+                    this.resultString +="%";
+                }
+                if(calculationStack.size()==2){
+                    Log.e("arit",calculationStack.toString());
+                    String secondaryResult = doTheMath(calculationStack.get(0),percentValue,calculationStack.get(1));
+                    this.resultString=secondaryResult;
+                    newOp = true;
+                    calculationStack.clear();
+                    stack.clear();
+                    calculationStack.add(secondaryResult);
+                    stack.add(secondaryResult);
+                }
+
             }
         }
     }
@@ -117,16 +136,29 @@ public class Calculator {
         double number2 = Double.valueOf(no2);
         double res = 0;
         if (op.equalsIgnoreCase("plus")) {
-            res = number1 + number2;
+            if(percentage){
+                res = number1 + number2*number1;
+                percentage = false;
+            }else{
+                res = number1 + number2;
+            }
             result = df.format(res);
         } else if (op.equalsIgnoreCase("multiply")) {
             res = number1 * number2;
             result = df.format(res);
         } else if (op.equalsIgnoreCase("divide")) {
-            res = number1 / number2;
-            result = df.format(res);
+            if(number2!=0){
+                res = number1 / number2;
+                result = df.format(res);
+            }
+
         } else if (op.equalsIgnoreCase("minus")) {
-            res = number1 - number2;
+            if(percentage){
+                res = number1 - number2*number1;
+                percentage = false;
+            }else{
+                res = number1 - number2;
+            }
             result = df.format(res);
         }
         return result;

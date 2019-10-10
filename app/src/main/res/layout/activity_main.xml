@@ -12,151 +12,193 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="history"
-        android:textSize="7pt"
         android:textColor="#bbb"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv2"/>
+        android:textSize="7pt"
+        app:layout_constraintBottom_toTopOf="@id/tv2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30pt"
-        android:textColor="#bbb"
-        android:text="0"
         android:gravity="end"
-        app:layout_constraintBottom_toTopOf="@+id/outerLL"
-        />
+        android:text="0"
+        android:textColor="#bbb"
+        android:textSize="30pt"
+        app:layout_constraintBottom_toTopOf="@+id/outerLL" />
 
     <com.humber.saynn.humbercalc.CustomLinearLayout
         android:id="@+id/outerLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-        android:id="@+id/rowLL"
-        style="@style/style_row">
+            android:id="@+id/rowLL"
+            style="@style/style_row">
 
-        <Button
-            android:id="@+id/btnC"
-            android:text="C"
-            style="@style/style_button"
-            android:background="#C4C5C7" />
-        <Button
-            android:id="@+id/btnSign"
-            android:text="+-"
-            style="@style/style_button"
-            android:background="#C4C5C7"
-/>
-        <Button
-            android:id="@+id/btnPercent"
-            android:text="%"
-            style="@style/style_button"
-            android:background="#C4C5C7"
-/>
-        <Button
-            android:id="@+id/btnDivide"
-            android:text="/"
-            style="@style/style_button"
-            android:background="#FB8F11"/>
+            <Button
+                android:id="@+id/btnC"
+                style="@style/style_button"
+                android:background="#C4C5C7"
+                android:text="C" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnSign"
+                style="@style/style_button"
+                android:background="#C4C5C7"
+                android:text="+-" />
+
+            <Button
+                android:id="@+id/btnPercent"
+                style="@style/style_button"
+                android:background="#C4C5C7"
+                android:text="%" />
+
+            <Button
+                android:id="@+id/btnDivide"
+                style="@style/style_button"
+                android:background="#FB8F11"
+                android:text="/" />
+
+            <Button
+                android:id="@+id/xy"
+                style="@style/style_button"
+                android:background="#b380ff"
+                android:text="\u2093\u02b8" />
+
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/row2LL"
             style="@style/style_row">
 
             <Button
                 android:id="@+id/btn7"
-                android:text="7"
-                style="@style/style_button" />
+                style="@style/style_button"
+                android:text="7" />
+
             <Button
                 android:id="@+id/btn8"
-                android:text="8"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="8" />
+
             <Button
                 android:id="@+id/btn9"
-                android:text="9"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="9" />
+
             <Button
                 android:id="@+id/btnMultiply"
-                android:text="x"
                 style="@style/style_button"
-                android:background="#FB8F11"/>
+                android:background="#FB8F11"
+                android:text="x" />
+
+            <Button
+                android:id="@+id/mplus"
+                style="@style/style_button"
+                android:background="#b380ff"
+                android:text="M+" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/row3LL"
             style="@style/style_row">
 
             <Button
                 android:id="@+id/btn4"
-                android:text="4"
-                style="@style/style_button" />
+                style="@style/style_button"
+                android:text="4" />
+
             <Button
                 android:id="@+id/btn5"
-                android:text="5"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="5" />
+
             <Button
                 android:id="@+id/btn6"
-                android:text="6"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="6" />
+
             <Button
                 android:id="@+id/btnMinus"
-                android:text="-"
                 style="@style/style_button"
-                android:background="#FB8F11"/>
+                android:background="#FB8F11"
+                android:text="-" />
+
+            <Button
+                android:id="@+id/mminus"
+                style="@style/style_button"
+                android:background="#b380ff"
+                android:text="M-" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/row4LL"
             style="@style/style_row">
 
             <Button
                 android:id="@+id/btn1"
-                android:text="1"
-                style="@style/style_button" />
+                style="@style/style_button"
+                android:text="1" />
+
             <Button
                 android:id="@+id/btn2"
-                android:text="2"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="2" />
+
             <Button
                 android:id="@+id/btn3"
-                android:text="3"
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="3" />
+
             <Button
                 android:id="@+id/btnPlus"
-                android:text="+"
                 style="@style/style_button"
-                android:background="#FB8F11"/>
+                android:background="#FB8F11"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/mc"
+                style="@style/style_button"
+                android:background="#b380ff"
+                android:text="MC" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/row5LL"
             style="@style/style_row"
-            android:gravity="bottom"
-            >
+            android:gravity="bottom">
 
             <Button
                 android:id="@+id/btn0"
-                android:text="0"
                 style="@style/style_button"
-                android:layout_width="1.5dp"
-                android:layout_weight="2"/>
+                android:layout_weight="2.015"
+                android:text="0" />
 
             <Button
                 android:id="@+id/btnPoint"
-                android:text="."
-                style="@style/style_button"/>
+                style="@style/style_button"
+                android:text="." />
+
             <Button
                 android:id="@+id/btnEquals"
-                android:text="="
                 style="@style/style_button"
-                android:background="#FB8F11"/>
+                android:background="#FB8F11"
+                android:text="=" />
+
+            <Button
+                android:id="@+id/mr"
+                style="@style/style_button"
+                android:background="#b380ff"
+                android:text="MR" />
 
         </LinearLayout>
+
 
     </com.humber.saynn.humbercalc.CustomLinearLayout>
 

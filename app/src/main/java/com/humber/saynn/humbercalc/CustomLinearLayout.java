@@ -26,7 +26,7 @@ public class CustomLinearLayout extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int w =  MeasureSpec.getSize(widthMeasureSpec);
         int h =  MeasureSpec.getSize(heightMeasureSpec);
-        int newheight = w*5/4;
+        int newheight = w*5/5;
 
 
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(newheight, MeasureSpec.EXACTLY));
