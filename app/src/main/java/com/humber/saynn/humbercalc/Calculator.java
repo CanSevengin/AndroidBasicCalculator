@@ -12,6 +12,7 @@ public class Calculator {
     ArrayList<String> stack;
     ArrayList<String> calculationStack;
     boolean newOp;
+    DecimalFormat df;
 
     public Calculator() {
         resultString = "";
@@ -19,6 +20,7 @@ public class Calculator {
         stack = new ArrayList<String>();
         calculationStack = new ArrayList<String>();
         newOp = false;
+        df = new DecimalFormat("#.########");
     }
 
     public void numberClicked(String numberString) {
@@ -64,6 +66,16 @@ public class Calculator {
                         newOp = true;
                         this.resultString = newStackStarted;
                 } else {
+                    Log.e("arit",calculationStack.toString());
+                    if(calculationStack.size()>=3){
+                        this.resultString=doTheMath(calculationStack.get(0),calculationStack.get(2),calculationStack.get(1));
+                        this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
+                        calculationStack.clear();
+                        stack.clear();
+                        stack.add(this.resultString);
+                        calculationStack.add(this.resultString);
+                        newOp = true;
+                    }
                     newOp = false;
                     calculationStack.add(op);
                     stack.add(numberString);
@@ -74,7 +86,10 @@ public class Calculator {
         if (isFunctionalButton(numberString)) {
             String fnctn = getFunctionalButton(numberString);
             if (fnctn.equalsIgnoreCase(".")) {
-                this.resultString += fnctn;
+                if(!this.resultString.contains(".")){
+                    this.resultString += fnctn;
+                }
+
             } else if (fnctn.equalsIgnoreCase("delete")) {
                 this.resultString = "";
                 this.historyString = "";
@@ -90,7 +105,7 @@ public class Calculator {
                     }
                 }
             } else if (fnctn.equalsIgnoreCase("percent")) {
-                this.resultString = (Double.valueOf(this.resultString) / 100.0) + "";
+                this.resultString = df.format(Double.valueOf(this.resultString) / 100.0);
             }
         }
     }
@@ -101,7 +116,6 @@ public class Calculator {
         double number1 = Double.valueOf(no1);
         double number2 = Double.valueOf(no2);
         double res = 0;
-        DecimalFormat df = new DecimalFormat("#.####");
         if (op.equalsIgnoreCase("plus")) {
             res = number1 + number2;
             result = df.format(res);
