@@ -3,63 +3,79 @@ package com.humber.saynn.humbercalc;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Calculator {
     String resultString;
     String historyString;
     ArrayList<String> stack;
+    ArrayList<String> calculationStack;
 
     public Calculator(){
         resultString = "";
         historyString = "";
         stack = new ArrayList<String>();
+        calculationStack = new ArrayList<String>();
     }
 
-    public void numberClicked(String numberString){
-        if(isNumber(numberString)){
-            if(stack.size()!=0){
+    public void numberClicked(String numberString) {
+        String op = "";
+        if (isNumber(numberString)) {
+            if(stack.size() != 0){
                 if(isArithmeticOperation(stack.get(stack.size()-1))){
-                    String op = getArithmeticOperation(stack.get(stack.size()-1));
+                    //Log.e("arit", "inside isArit: " + stack.toString());
+                    this.resultString = numberString;
                     stack.remove(stack.size()-1);
-                    String result = doTheMath(stack.get(stack.size()-1),numberString,op);
-                    stack.remove(stack.size()-1);
-                    stack.add(result);
-                    Log.e("arit",stack.toString());
-                    this.resultString = result;
                 }else{
-                    stack.add(numberString);
+                    this.resultString += numberString;
                 }
             }else{
-                stack.add(numberString);
-                this.resultString += numberString;
+                this.resultString+=numberString;
             }
-        }else if(isArithmeticOperation(numberString)){
-            stack.add(numberString);
-            this.resultString += numberString;
+
+
+        } else if (isArithmeticOperation(numberString)) {
+            if (!this.resultString.isEmpty()) {
+                stack.add(this.resultString);
+                calculationStack.add(this.resultString);
+                this.historyString = this.resultString;
+                this.resultString = "";
+                op = getArithmeticOperation(numberString);
+                if(op.equalsIgnoreCase("equals")){
+                    calculationStack.add(stack.get(stack.size()-1));
+                    //Log.e("arit","inside Equals: " + calculationStack.toString());
+                    String newStackStarted = doTheMath(calculationStack.get(0),calculationStack.get(2),calculationStack.get(1));
+                    calculationStack.clear();
+                    stack.clear();
+                    stack.add(newStackStarted);
+                    this.resultString=newStackStarted;
+                }else{
+                    calculationStack.add(op);
+                    stack.add(numberString);
+                }
+            }
         }
-
-
     }
 
     private String doTheMath(String no1, String no2, String op){
         String result="";
-        int number1 = Integer.valueOf(no1);
-        int number2 = Integer.valueOf(no2);
-        int res = 0;
-        Log.e("Arithmetic",number1+"");
+        double number1 = Double.valueOf(no1);
+        double number2 = Double.valueOf(no2);
+        double res = 0;
+        DecimalFormat df = new DecimalFormat("#.####");
         if(op.equalsIgnoreCase("plus")){
              res = number1 + number2;
-             result = res+"";
+             result =  df.format(res);
         }else if(op.equalsIgnoreCase("multiply")){
             res = number1 * number2;
-            result = res+"";
+            result = df.format(res);
         }else if(op.equalsIgnoreCase("divide")){
             res = number1 / number2;
-            result = res+"";
+            result =  df.format(res);
         }else if(op.equalsIgnoreCase("minus")){
             res = number1 - number2;
-            result = res+"";
+            result =  df.format(res);
         }
         return result;
     }
@@ -75,6 +91,8 @@ public class Calculator {
 
         }else if(s.equalsIgnoreCase("-")){
             op = "minus";
+        }else if(s.equalsIgnoreCase("=")){
+            op = "equals";
         }
         return op;
     }
@@ -85,6 +103,7 @@ public class Calculator {
         arithmetics.add("/");
         arithmetics.add("x");
         arithmetics.add("-");
+        arithmetics.add("=");
         return arithmetics.contains(s);
     }
 
