@@ -37,7 +37,9 @@ public class Calculator {
                 }
             } else {
                 this.resultString = numberString;
-                this.historyString = stack.get(0);
+                if (stack.size() != 0) {
+                    this.historyString = stack.get(0);
+                }
                 newOp = false;
             }
             // If any arithmetic operation is clicked
@@ -52,15 +54,15 @@ public class Calculator {
                 op = getArithmeticOperation(numberString);
                 //If equals is clicked
                 if (op.equalsIgnoreCase("equals")) {
-                    calculationStack.add(stack.get(stack.size() - 1));
-                    //Log.e("arit","inside Equals: " + calculationStack.toString());
-                    String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
-                    this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
-                    calculationStack.clear();
-                    stack.clear();
-                    stack.add(newStackStarted);
-                    newOp = true;
-                    this.resultString = newStackStarted;
+                        calculationStack.add(stack.get(stack.size() - 1));
+                        //Log.e("arit","inside Equals: " + calculationStack.toString());
+                        String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
+                        this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
+                        calculationStack.clear();
+                        stack.clear();
+                        stack.add(newStackStarted);
+                        newOp = true;
+                        this.resultString = newStackStarted;
                 } else {
                     newOp = false;
                     calculationStack.add(op);
@@ -68,7 +70,31 @@ public class Calculator {
                 }
             }
         }
+        //If functions are clicked
+        if (isFunctionalButton(numberString)) {
+            String fnctn = getFunctionalButton(numberString);
+            if (fnctn.equalsIgnoreCase(".")) {
+                this.resultString += fnctn;
+            } else if (fnctn.equalsIgnoreCase("delete")) {
+                this.resultString = "";
+                this.historyString = "";
+                stack.clear();
+                calculationStack.clear();
+                newOp = true;
+            } else if (fnctn.equalsIgnoreCase("change")) {
+                if (!this.resultString.isEmpty()) {
+                    if (Double.valueOf(this.resultString) > 0) {
+                        this.resultString = "-" + this.resultString;
+                    } else {
+                        this.resultString = Math.abs(Double.valueOf(this.resultString)) + "";
+                    }
+                }
+            } else if (fnctn.equalsIgnoreCase("percent")) {
+                this.resultString = (Double.valueOf(this.resultString) / 100.0) + "";
+            }
+        }
     }
+
 
     private String doTheMath(String no1, String no2, String op) {
         String result = "";
@@ -92,21 +118,13 @@ public class Calculator {
         return result;
     }
 
-    private String getArithmeticOperation(String s) {
-        String op = "";
-        if (s.equalsIgnoreCase("x")) {
-            op = "multiply";
-        } else if (s.equalsIgnoreCase("+")) {
-            op = "plus";
-        } else if (s.equalsIgnoreCase("/")) {
-            op = "divide";
-
-        } else if (s.equalsIgnoreCase("-")) {
-            op = "minus";
-        } else if (s.equalsIgnoreCase("=")) {
-            op = "equals";
-        }
-        return op;
+    private boolean isFunctionalButton(String numberString) {
+        ArrayList<String> functionals = new ArrayList<String>();
+        functionals.add("+-");
+        functionals.add("C");
+        functionals.add("%");
+        functionals.add(".");
+        return functionals.contains(numberString);
     }
 
     private boolean isArithmeticOperation(String s) {
@@ -126,6 +144,37 @@ public class Calculator {
         }
 
         return false;
+    }
+
+    private String getArithmeticOperation(String s) {
+        String op = "";
+        if (s.equalsIgnoreCase("x")) {
+            op = "multiply";
+        } else if (s.equalsIgnoreCase("+")) {
+            op = "plus";
+        } else if (s.equalsIgnoreCase("/")) {
+            op = "divide";
+
+        } else if (s.equalsIgnoreCase("-")) {
+            op = "minus";
+        } else if (s.equalsIgnoreCase("=")) {
+            op = "equals";
+        }
+        return op;
+    }
+
+    private String getFunctionalButton(String s) {
+        String fn = "";
+        if (s.equalsIgnoreCase("+-")) {
+            fn = "change";
+        } else if (s.equalsIgnoreCase("%")) {
+            fn = "percent";
+        } else if (s.equalsIgnoreCase(".")) {
+            fn = ".";
+        } else if (s.equalsIgnoreCase("C")) {
+            fn = "delete";
+        }
+        return fn;
     }
 
     public String getHistoryString() {
