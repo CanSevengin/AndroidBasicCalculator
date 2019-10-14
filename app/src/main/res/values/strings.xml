@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Humber Calc</string>
+    <string name="power">\u2093\u02b8</string>
 </resources>
