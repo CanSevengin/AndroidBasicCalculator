@@ -61,13 +61,13 @@ public class Calculator {
             doTheArithmetic(numberString, op);
             //If functions are clicked
             //CALL FUNCTION
-        }else if (isFunctionalButton(numberString)) {
+        } else if (isFunctionalButton(numberString)) {
             String fnctn = getFunctionalButton(numberString);
             doTheFunction(fnctn);
         }
     }
 
-    private void doTheFunction(String fnctn){
+    private void doTheFunction(String fnctn) {
         if (fnctn.equalsIgnoreCase(".")) {
             if (!this.resultString.contains(".")) {
                 this.resultString += fnctn;
@@ -101,7 +101,7 @@ public class Calculator {
                 newOp = true;
                 calculationStack.clear();
                 stack.clear();
-            }else{
+            } else {
                 this.resultString = percentValue;
                 percentage = false;
             }
@@ -114,9 +114,11 @@ public class Calculator {
         }
     }
 
-    private void doTheArithmetic(String numberString, String op){
-        Log.e("arit", "Arithmetic, OP: " + op);
-        if (!this.resultString.isEmpty()) {
+    private void doTheArithmetic(String numberString, String op) {
+        //Log.e("arit", "Arithmetic, OP: " + op);
+
+
+        if (!this.resultString.isEmpty()) {         //Entry is correct. There are numbers to work with.
             if (!op.equalsIgnoreCase("mplus") && !op.equalsIgnoreCase("mminus")) {
                 stack.add(this.resultString);
                 calculationStack.add(this.resultString);
@@ -125,15 +127,22 @@ public class Calculator {
                 //If equals is clicked
                 if (op.equalsIgnoreCase("equals")) {
                     //Log.e("arit","Stack: " + stack.toString() + ", Calc: " + calculationStack.toString());
-                    calculationStack.add(stack.get(stack.size() - 1));
-                    //Log.e("arit","inside Equals: " + calculationStack.toString());
-                    String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
-                    this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
-                    calculationStack.clear();
-                    stack.clear();
-                    stack.add(newStackStarted);
-                    newOp = true;
-                    this.resultString = newStackStarted;
+                    if(calculationStack.size()<3){
+                        calculationStack.clear();
+                        stack.clear();
+                        this.historyString = "Wrong operation.";
+                        this.resultString = "";
+                        return;
+                    }
+                        calculationStack.add(stack.get(stack.size() - 1));
+                        //Log.e("arit","inside Equals: " + calculationStack.toString());
+                        String newStackStarted = doTheMath(calculationStack.get(0), calculationStack.get(2), calculationStack.get(1));
+                        this.historyString = calculationStack.get(0) + " " + calculationStack.get(1) + " " + calculationStack.get(2) + " =";
+                        calculationStack.clear();
+                        stack.clear();
+                        stack.add(newStackStarted);
+                        newOp = true;
+                        this.resultString = newStackStarted;
                 } else {
                     //Log.e("arit", calculationStack.toString());
                     if (calculationStack.size() >= 3) {
@@ -151,6 +160,11 @@ public class Calculator {
                 }
             } else { //If memory function
                 doTheMath(memory, this.resultString, op);
+            }
+        } else { //If the entry is incorrect ,i.e, nothing to work with
+            if (stack.isEmpty()) {
+                this.resultString = "";
+                newOp = true;
             }
         }
     }
@@ -171,10 +185,12 @@ public class Calculator {
             result = df.format(res);
         } else if (op.equalsIgnoreCase("multiply")) {
             res = number1 * number2;
+            if (percentage) percentage = false;
             result = df.format(res);
         } else if (op.equalsIgnoreCase("divide")) {
             if (number2 != 0) {
                 res = number1 / number2;
+                if (percentage) percentage = false;
                 result = df.format(res);
             }
         } else if (op.equalsIgnoreCase("minus")) {
@@ -203,8 +219,8 @@ public class Calculator {
                 this.resultString = "";
                 newOp = true;
             }
-        } else if(op.equalsIgnoreCase("power")){
-            res = Math.pow(number1,number2);
+        } else if (op.equalsIgnoreCase("power")) {
+            res = Math.pow(number1, number2);
             result = df.format(res);
         }
         return result;
